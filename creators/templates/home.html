@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Collabstr | Creators</title>
+        <!-- ****** link home.css in line below ******* -->
+        <link rel="stylesheet" type="text/css" href="{% static "creators/home.css" %}">
+        <meta charset="UTF-8">
+        <style>
+            /* latin */
+            @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            /* latin */
+            @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            /* latin */
+            @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            /* latin */
+            @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5nw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-row">
+                <div>
+                    <img alt="Collabstr logo" class="full-logo-img" src="https://d5ik1gor6xydq.cloudfront.net/websiteImages/logo.svg"/>
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <!-- ******* display creators here ******** -->
+            <ul class="tabs">
+              <li class="nav-item" data-platform="IG">Instagram</li>
+              <li class="nav-item" data-platform="TT">TikTok</li>
+              <li class="nav-item" data-platform="UGC">User Generated Content</li>
+            </ul>
+
+            <div id="content_list" class="content-list"></div>
+
+            <!-- ******* add pagination ******** -->
+            <div class="load-more-container">
+                <button class="load-more">Load More</button>
+            </div>
+
+        </div>
+    </body>
+    <script>
+        // ***** put javascript/jquery/ajax here ******
+
+        const displayContent = (data, overwriteContent = true) => {
+            const content = data.results;
+            const content_list = document.getElementById("content_list");
+            if (overwriteContent) content_list.innerHTML = "";
+            for (let i = 0; i < content.length; i++) {
+                const content_item = document.createElement("div");
+                content_item.className = "content-item";
+                if (content[i].is_video) {
+                    const content_item_video = document.createElement("video");
+                    content_item_video.src = content[i].url;
+                    content_item_video.controls = true;
+                    content_item.appendChild(content_item_video);
+                } else {
+                  const content_item_img = document.createElement("img");
+                  content_item_img.src = content[i].url;
+                  content_item.appendChild(content_item_img);
+                }
+
+
+
+                const item_description = document.createElement("div");
+                item_description.className = "item-description";
+
+                const creator_info = document.createElement("div");
+                creator_info.className = "creator-info";
+                const creator_name = document.createElement("div");
+                creator_name.className = "creator-name";
+                creator_name.textContent = content[i].creator.name;
+                creator_info.appendChild(creator_name);
+
+                const creator_rating = document.createElement("div");
+                creator_rating.className = "creator-rating";
+                creator_rating.textContent = content[i].creator.rating;
+                creator_info.appendChild(creator_rating);
+
+                item_description.appendChild(creator_info);
+
+                const content_item_download = document.createElement("a");
+                content_item_download.href = content[i].url;
+                content_item_download.download = "download";
+                content_item_download.textContent = "Download";
+
+                item_description.appendChild(content_item_download);
+
+                content_item.appendChild(item_description);
+
+                content_list.appendChild(content_item);
+            }
+
+            // hide load more button if there are no more results
+            if (data.next == null) {
+                $(".load-more").hide();
+            } else {
+                $(".load-more").show();
+            }
+
+            // add pagination
+            $(".load-more").click(function(){
+                const url = new URL(data.next);
+                const params = new URLSearchParams(url.search);
+                const platform = params.get("platform");
+                fetchContent(platform, data.next, false);
+            });
+        }
+
+        const fetchContent = (platform, url = '/api/content', overwriteContent = true ) => {
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+                data: {
+                    platform: platform
+                },
+                success: function(data){
+                    displayContent(data, overwriteContent);
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        }
+
+        $(document).ready(function(){
+            const inputUrl = new URL(window.location.href);
+            const inputParams = new URLSearchParams(inputUrl.search);
+            const platform = inputParams.get("platform");
+            if (platform) {
+                fetchContent(platform);
+            } else {
+                fetchContent("IG");
+            }
+        });
+
+        $(".nav-item").click(function(){
+            const platform = $(this).data("platform");
+            const url = new URL(window.location.href);
+            const params = new URLSearchParams(url.search);
+            params.set("platform", platform);
+
+            window.history.replaceState({}, '', `${location.pathname}?${params}`);
+
+            fetchContent(platform);
+        });
+    </script>
+</html>
